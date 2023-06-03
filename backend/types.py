@@ -1,31 +1,29 @@
 import os
-from PIL import Image as PIL_Image
+from PIL import Image
 from settings import IMAGE_DATA_PATH
 from tqdm import tqdm
 
 
-class Image:
+class ImageItem:
+    """represents an image in the collection"""
     def __init__(self, filename):
         """filename is the name of the file in image-data"""
         self.filename = filename
         filepath = os.path.join(IMAGE_DATA_PATH, filename)
-        self.image = PIL_Image.open(filepath)
+        self.image = Image.open(filepath)
 
-    @staticmethod
-    def open(*arg):
-        self.filepath = ""
-        self.image = PIL_Image.open(*arg)
+    """todo add preprocesses of an image here"""
 
 
-ALL_IMAGES = []
+ALL_IMAGE_ITEMS = []
 
 if os.path.exists(IMAGE_DATA_PATH):
     for filename in tqdm(os.listdir(IMAGE_DATA_PATH), "loading images"):
         try:
-            img = Image(filename)
-            ALL_IMAGES.append(img)
-        except e:
+            img = ImageItem(filename)
+            ALL_IMAGE_ITEMS.append(img)
+        except Exception as e:
             print(e)
-    print("loaded ", len(ALL_IMAGES), "images")
+    print("loaded ", len(ALL_IMAGE_ITEMS), "images")
 else:
     print("folder", IMAGE_DATA_PATH, "does not exist")

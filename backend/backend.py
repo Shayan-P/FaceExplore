@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify
-from types import Image
+from types import ImageItem
+from core import similar_images
+from PIL import Image
 import io
 
 app = Flask(__name__)
@@ -19,9 +21,9 @@ def similar_images_api():
         img = Image.open(io.BytesIO(image.read()))
         processed_images.append(img)
 
-    similar_images = similars(processed_images)
-    similar_images_filenames = [img.filename for img in similar_images]
-    return jsonify({'result': similar_images_filenames})
+    res_image_items = similar_images(processed_images)
+    res_image_filenames = [img_item.filename for img_item in res_image_items]
+    return jsonify({'result': res_image_filenames})
 
 
 if __name__ == '__main__':
