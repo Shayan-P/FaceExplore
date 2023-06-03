@@ -1,3 +1,4 @@
 .idea/**
 .vscode/**
 image-data/
+backend/hidden_settings.py
