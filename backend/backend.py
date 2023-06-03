@@ -1,8 +1,10 @@
+import io
+
 from flask import Flask, request, jsonify
 from types import ImageItem
 from core import similar_images
 from PIL import Image
-import io
+from settings import DEFAULT_HOST, DEFAULT_PORT
 
 app = Flask(__name__)
 
@@ -21,10 +23,10 @@ def similar_images_api():
         img = Image.open(io.BytesIO(image.read()))
         processed_images.append(img)
 
-    res_image_items = similar_images(processed_images)
+    res_image_items: list[ImageItem] = similar_images(processed_images)
     res_image_filenames = [img_item.filename for img_item in res_image_items]
     return jsonify({'result': res_image_filenames})
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(DEFAULT_HOST, DEFAULT_PORT)
