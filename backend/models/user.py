@@ -1,3 +1,5 @@
+import os
+
 from backend.models.image_item import ImageItem
 from backend.settings import USER_IMAGE_PATH
 from uuid import uuid4
