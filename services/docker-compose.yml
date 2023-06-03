@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  my-nginx:
+    image: nginx
+    network_mode: "host"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx-logs:/var/logs
+      - ../image-data:/www/data:ro
