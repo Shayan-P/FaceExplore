@@ -1,4 +1,7 @@
-.idea/**
-.vscode/**
-image-data/
+**/.idea
+**/.vscode
+**/image-serve-path
+**/flask_session
+**/__pycache__
+
 backend/hidden_settings.py

@@ -1,5 +1,4 @@
-from types import Image, ImageItem
-from types import ALL_IMAGE_ITEMS
+from backend.models.image_item import Image, ImageItem, ALL_IMAGE_ITEMS
 
 
 def similar_images(images: [Image]) -> [ImageItem]:
