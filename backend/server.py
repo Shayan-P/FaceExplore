@@ -32,7 +32,7 @@ def setup_session():
     session['user'] = User.get_or_create_user(session['session_id'])
 
 
-@app.route('/upload_image', methods=['POST'])
+@app.route('/upload_image/', methods=['POST'])
 def upload_image_api():
     """saves the image that user uploads to their session"""
 

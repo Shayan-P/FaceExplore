@@ -15,4 +15,5 @@ search for photos in which a specific person is present among a large pool of im
 
 ## other
 
-- configure the port and domain of the application in nginx.conf (default is localhost:8888)
+- configure the port and domain of the application in nginx.conf (default is localhost:8765)
+- currently limit of photo that users can upload is 30M. you can modify it in nginx.conf `client_max_body_size       30M;`

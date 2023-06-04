@@ -19,5 +19,5 @@ create_path_if_not_exists(USER_IMAGE_PATH)
 
 
 SESSION_COOKIE_NAME = "my_session"
-DEFAULT_HOST = "localhost"
+DEFAULT_HOST = '0.0.0.0'  # accept from all hosts
 DEFAULT_PORT = 8000
