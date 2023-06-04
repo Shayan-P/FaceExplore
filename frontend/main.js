@@ -11,7 +11,7 @@ function updateSampleImageList(sampleList) {
 
 async function uploadFile(f) {
 	let form = new FormData();
-	form.append('file', f);
+	form.append('image', f);
     console.log('before fetch')
 	let resp = await fetch(uploadImageAPI, { method: 'POST', body:form });
     if(resp.status !== 200) {
@@ -47,6 +47,7 @@ function handleImageSelect(event) {
             sendBtn.textContent = 'submit';
             sendBtn.addEventListener('click', () => (
                 uploadFile(file)
+                    .then(() => previewContainer.removeChild(div))
                     .catch(e => info.textContent = e.toString())
             ));
             cancelBtn.textContent = 'cancel';
