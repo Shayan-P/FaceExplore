@@ -1,25 +1,30 @@
 const domain = 'http://localhost:8765'
 const apiPrefix = `${domain}/api/v1`;
 const similarImagesAPI = `${apiPrefix}/similar_images/`
-const staticImageAPI = `${apiPrefix}/static/`
 const uploadImageAPI = `${apiPrefix}/upload_image/`
 
 
 function updateSampleImageList(sampleList) {
-    console.log('uploading list', sampleList);
+    // clear children
+    [...sampleImagesContainer.children].forEach(child => sampleImagesContainer.removeChild(child));
+
+    // update with new ones
+    [...sampleList].forEach(servePath => {
+        const imgElement = document.createElement('img');
+        sampleImagesContainer.appendChild(imgElement);
+        imgElement.src = `/static${servePath}`;
+        imgElement.width = 200;
+    });
 }
 
 async function uploadFile(f) {
 	let form = new FormData();
 	form.append('image', f);
-    console.log('before fetch')
 	let resp = await fetch(uploadImageAPI, { method: 'POST', body:form });
     if(resp.status !== 200) {
-        console.log("here");
         throw new Error("error happened");
     }
     console.log(resp);
-    console.log('after fetch')
 	let data = await resp.json();
     let sampleImageList = data['result'];
     updateSampleImageList(sampleImageList);
@@ -28,7 +33,6 @@ async function uploadFile(f) {
 
 // Function to handle individual image selection
 function handleImageSelect(event) {
-    console.log('length is ', event.target.files.length);
     [...event.target.files].forEach(file => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -61,6 +65,7 @@ function handleImageSelect(event) {
 }
 
 const previewContainer = document.getElementById('preview-container');
+const sampleImagesContainer = document.getElementById('sample-images-container');
 
 const form = document.getElementById('upload-form');
 const imageInput = document.getElementById('image-input');
