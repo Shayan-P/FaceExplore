@@ -17,3 +17,10 @@ search for photos in which a specific person is present among a large pool of im
 
 - configure the port and domain of the application in nginx.conf (default is localhost:8765)
 - currently limit of photo that users can upload is 30M. you can modify it in nginx.conf `client_max_body_size       30M;`
+
+## todos
+
+- add some logger
+- rate limiter on requests of anyone
+- we should clear out user images after a while or memory crisis happens
+- prevent fast clicking in upload
