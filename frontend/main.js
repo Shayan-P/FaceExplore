@@ -3,6 +3,17 @@ const apiPrefix = `${domain}/api/v1`;
 const similarImagesAPI = `${apiPrefix}/similar_images/`
 const uploadImageAPI = `${apiPrefix}/upload_image/`
 
+async function uploadFile(f) {
+    let form = new FormData();
+    form.append('image', f);
+    let resp = await fetch(uploadImageAPI, { method: 'POST', body:form });
+    if(resp.status !== 200) {
+        throw new Error("error happened");
+    }
+    let data = await resp.json();
+    let sampleImageList = data['result'];
+    updateSampleImageList(sampleImageList);
+}
 
 function updateSampleImageList(sampleList) {
     // clear children
@@ -17,21 +28,27 @@ function updateSampleImageList(sampleList) {
     });
 }
 
-async function uploadFile(f) {
-	let form = new FormData();
-	form.append('image', f);
-	let resp = await fetch(uploadImageAPI, { method: 'POST', body:form });
+async function updateGallery() {
+    let resp = await fetch(similarImagesAPI);
+    console.log(resp)
     if(resp.status !== 200) {
-        throw new Error("error happened");
+        throw new Error("error happened"); // add a better handler here...
     }
-    console.log(resp);
-	let data = await resp.json();
-    let sampleImageList = data['result'];
-    updateSampleImageList(sampleImageList);
+    let data = await resp.json();
+    let resultPaths = data['result'];
+
+    // clear children
+    [...galleryContainer.children].forEach(child => galleryContainer.removeChild(child));
+
+    // update with new ones
+    [...resultPaths].forEach(servePath => {
+        const imgElement = document.createElement('img');
+        galleryContainer.appendChild(imgElement);
+        imgElement.src = `/static${servePath}`;
+        imgElement.width = 200;
+    });
 }
 
-
-// Function to handle individual image selection
 function handleImageSelect(event) {
     [...event.target.files].forEach(file => {
         const reader = new FileReader();
@@ -66,7 +83,12 @@ function handleImageSelect(event) {
 
 const previewContainer = document.getElementById('preview-container');
 const sampleImagesContainer = document.getElementById('sample-images-container');
+const galleryContainer = document.getElementById('gallery-container');
+const similarRequestButton = document.getElementById('similar-request-button')
 
 const form = document.getElementById('upload-form');
 const imageInput = document.getElementById('image-input');
 imageInput.addEventListener('change', handleImageSelect);
+
+similarRequestButton.addEventListener('click', updateGallery)
+
