@@ -54,7 +54,7 @@ def upload_image_api():
         return jsonify({'error': 'Failed to process the image', 'details': str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-@app.route('/similar_images', methods=['GET'])
+@app.route('/similar_images/', methods=['GET'])
 def similar_images_api():
     """returns the serve paths of the similar images"""
 
