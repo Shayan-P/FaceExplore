@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Personal Photo Finder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Upload Image here</h1>
+
+<form id="upload-form" enctype="multipart/form-data">
+    <input type="file" id="image-input" name="images" accept="image/*" multiple>
+</form>
+
+<div id="preview-container"></div>
+
+<hr>
+<h1>Your sample Images</h1>
+
+<div id="sample-images-container"></div>
+
+<hr>
+<h1>Images similar to you from gallery</h1>
+<button id="similar-request-button">click to see your images</button>
+
+<div id="gallery-container"></div>
+</body>
+
+<script src="bundle.js" defer></script>
+</html>

@@ -5,3 +5,5 @@
 **/__pycache__
 
 backend/hidden_settings.py
+**/dist
+**/tmp
