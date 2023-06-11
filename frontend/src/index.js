@@ -60,7 +60,7 @@ async function uploadFile(f) {
     updateSampleImageList(sampleList) // you may remove this since sample image list gets updated later
 }
 
-async function updateGallery() {
+async function asyncUpdateGallery() {
     const resultPaths = await similarImagesAPI();
 
     // clear children
@@ -68,21 +68,23 @@ async function updateGallery() {
 
     // update with new ones
     const newItems = [...resultPaths].map(({imagePath, thumbPath}, index) => {
-        // const item = document.createElement("a")
-        // item.href = getStaticSrc(imagePath);
-        // item.dataLgSize = "1600-2400"
-        // const nodeImg = document.createElement("img")
-        // nodeImg.src = getStaticSrc(thumbPath)
-        // item.appendChild(nodeImg)
-        // return item;
         const item = document.createElement("a")
-        item.href = getStaticSrc(imagePath)
+        item.href = getStaticSrc(imagePath);
+        item.dataLgSize = "1600-2400"
+        const nodeImg = document.createElement("img")
+        nodeImg.src = getStaticSrc(thumbPath)
+        item.appendChild(nodeImg)
+        return item;
     });
     galleryContainer.append(...newItems)
     // Update LightGallery's gallery items
     // lgallery.updateSlides(newItems);
     // refresh LightGallery to display the new image
     lgallery.refresh();
+}
+
+function updateGallery() {
+    asyncUpdateGallery().catch(console.error)
 }
 
 function updateSampleImageList(sampleList) {
