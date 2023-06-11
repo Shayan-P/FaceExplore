@@ -1,9 +1,10 @@
 import os
+import numpy as np
+import matplotlib.pyplot as plt # todo remove later
 
-from backend.models.image_item import ImageItem
+from backend.models.image_item import ImageItem, ALL_IMAGE_ITEMS
 from backend.settings import USER_IMAGE_PATH
 from uuid import uuid4
-from backend.core import similar_images
 from PIL import Image
 
 
@@ -46,5 +47,31 @@ class User:
         #     sample_images = [item.get_image() for item in self.sample_image_items]
         #     self.__previous_similarity_result = similar_images(sample_images)
         # return self.__previous_similarity_result
-        sample_images = [item.get_image() for item in self.sample_image_items]
-        return similar_images(sample_images)
+
+        user_face_embeddings = []
+        for item in self.sample_image_items:
+            user_face_embeddings.extend([list(face.embedding) for face in item.faces])
+        user_face_embeddings = np.array(user_face_embeddings)
+        # N * D
+        user_face_embeddings = user_face_embeddings / np.linalg.norm(user_face_embeddings, axis=1)[:, None]
+        # normalized
+
+        def sim_score(item: ImageItem):
+            if len(item.faces) == 0:
+                return 0  # todo detect the ones without face an do something about them
+            item_face_embedding = np.array([
+                list(face.embedding) for face in item.faces
+            ]) # M * D
+            item_face_embedding = item_face_embedding / np.linalg.norm(item_face_embedding, axis=1)[:, None]
+            # normalized
+
+            matrix = user_face_embeddings @ item_face_embedding.T
+            # N * M
+            return np.max(matrix)  # todo can be improved later...
+
+        annot = [(item, sim_score(item)) for item in ALL_IMAGE_ITEMS]
+        annot.sort(key=lambda pair: pair[1], reverse=True)
+
+        print([pair[1] for pair in annot]) # todo remove later
+
+        return [pair[0] for pair in annot[:100]]  # todo change 100 later

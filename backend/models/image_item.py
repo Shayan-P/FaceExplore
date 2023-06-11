@@ -4,6 +4,16 @@ from PIL import Image
 from backend.settings import IMAGE_SERVE_PATH, GALLERY_IMAGE_PATH, THUMB_IMAGE_PATH, THUMBNAIL_SIZE
 from tqdm import tqdm
 from copy import deepcopy
+from backend.functions import get_image_embedding, get_faces_images
+
+
+class FaceItem:
+    def __init__(self, parent_item: "ImageItem", bounding_box):
+        """bounding box is in the format (x1, y1, x2, y2)"""
+        self.parentItem = parent_item
+        self.boundingBox = bounding_box
+        cropped = parent_item.image.crop(bounding_box)
+        self.embedding = get_image_embedding(cropped)
 
 
 class ImageItem:
@@ -14,6 +24,7 @@ class ImageItem:
         self.filepath = filepath
         self.thumbnail_path = None
         self.image = Image.open(filepath)
+        self.faces = [FaceItem(self, box) for box in get_faces_images(self.image)]
         if with_thumb:
             self.__create_thumbnail()
 
