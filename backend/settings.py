@@ -7,6 +7,7 @@ IMAGE_SERVE_PATH = os.path.join(PROJECT_PATH, "image-serve-path")
 GALLERY_IMAGE_PATH = os.path.join(IMAGE_SERVE_PATH, "gallery-image")
 USER_IMAGE_PATH = os.path.join(IMAGE_SERVE_PATH, "user-image")
 THUMB_IMAGE_PATH = os.path.join(IMAGE_SERVE_PATH, "thumbnail")
+PICKLE_PATH = os.path.join(IMAGE_SERVE_PATH, "image-cache.pkl")
 
 
 def create_path_if_not_exists(path):

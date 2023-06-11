@@ -1,7 +1,8 @@
 import os
+import pickle
 
 from PIL import Image
-from backend.settings import IMAGE_SERVE_PATH, GALLERY_IMAGE_PATH, THUMB_IMAGE_PATH, THUMBNAIL_SIZE
+from backend.settings import IMAGE_SERVE_PATH, GALLERY_IMAGE_PATH, THUMB_IMAGE_PATH, THUMBNAIL_SIZE, PICKLE_PATH
 from tqdm import tqdm
 from copy import deepcopy
 from backend.functions import get_image_embedding, get_faces_images
@@ -12,7 +13,7 @@ class FaceItem:
         """bounding box is in the format (x1, y1, x2, y2)"""
         self.parentItem = parent_item
         self.boundingBox = bounding_box
-        cropped = parent_item.image.crop(bounding_box)
+        cropped = parent_item.get_image().crop(bounding_box)
         self.embedding = get_image_embedding(cropped)
 
 
@@ -23,8 +24,7 @@ class ImageItem:
         assert filepath.startswith(IMAGE_SERVE_PATH)
         self.filepath = filepath
         self.thumbnail_path = None
-        self.image = Image.open(filepath)
-        self.faces = [FaceItem(self, box) for box in get_faces_images(self.image)]
+        self.faces = [FaceItem(self, box) for box in get_faces_images(self.get_image())]
         if with_thumb:
             self.__create_thumbnail()
 
@@ -33,7 +33,7 @@ class ImageItem:
         thumb_path = os.path.join(THUMB_IMAGE_PATH, rest)
         if not os.path.exists(thumb_path):
             try:
-                img = deepcopy(self.image)
+                img = deepcopy(self.get_image())
                 img.thumbnail(THUMBNAIL_SIZE)
                 os.makedirs(os.path.dirname(thumb_path), exist_ok=True)
                 img.save(thumb_path)
@@ -52,19 +52,38 @@ class ImageItem:
         return res
 
     def get_image(self) -> Image:
-        return self.image
+        return Image.open(self.filepath)
+
+
+def recursive_file_search(path):
+    for thing in os.listdir(path):
+        cur = os.path.join(path, thing)
+        if os.path.isfile(cur):
+            yield cur
+        elif os.path.isdir(cur):
+            yield from recursive_file_search(cur)
 
 
 ALL_IMAGE_ITEMS = []
 
+if os.path.exists(PICKLE_PATH):
+    ALL_IMAGE_ITEMS = list(pickle.load(open(PICKLE_PATH, 'rb')))
+
 if os.path.exists(GALLERY_IMAGE_PATH):
-    for filename in tqdm(os.listdir(GALLERY_IMAGE_PATH), "loading images"):
+    all_paths_in_pickle = set(item.filepath for item in ALL_IMAGE_ITEMS)
+    for filename in tqdm(list(recursive_file_search(GALLERY_IMAGE_PATH)), "loading images"):
         try:
             path = os.path.join(GALLERY_IMAGE_PATH, filename)
+            if path in all_paths_in_pickle:
+                continue  # already exist in ALL_IMAGE_ITEMS
             img = ImageItem(path)
             ALL_IMAGE_ITEMS.append(img)
         except Exception as e:
             print(e)
     print("loaded ", len(ALL_IMAGE_ITEMS), "images")
+
+    with open(PICKLE_PATH, 'wb') as f:
+        pickle.dump(ALL_IMAGE_ITEMS, f)
+    print("pickle file saved at ", PICKLE_PATH)
 else:
     print("folder", GALLERY_IMAGE_PATH, "does not exist")
