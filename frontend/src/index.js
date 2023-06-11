@@ -1,7 +1,16 @@
+import lightGallery from 'lightgallery';
+import lgThumbnail from 'lightgallery/plugins/thumbnail'
+import lgZoom from 'lightgallery/plugins/zoom'
+
+
 const domain = 'http://localhost:8765'
 const apiPrefix = `${domain}/api/v1`;
 const similarImagesAPI = `${apiPrefix}/similar_images/`
 const uploadImageAPI = `${apiPrefix}/upload_image/`
+
+function getStaticSrc(relpath) {
+    return "/static" + (relpath[0] === '/' ? "" : "/") + relpath
+}
 
 async function uploadFile(f) {
     let form = new FormData();
@@ -20,17 +29,16 @@ function updateSampleImageList(sampleList) {
     [...sampleImagesContainer.children].forEach(child => sampleImagesContainer.removeChild(child));
 
     // update with new ones
-    [...sampleList].forEach(servePath => {
+    [...sampleList].forEach(({imagePath, thumbPath}) => {
         const imgElement = document.createElement('img');
         sampleImagesContainer.appendChild(imgElement);
-        imgElement.src = `/static${servePath}`;
+        imgElement.src = getStaticSrc(imagePath);
         imgElement.width = 200;
     });
 }
 
 async function updateGallery() {
     let resp = await fetch(similarImagesAPI);
-    console.log(resp)
     if(resp.status !== 200) {
         throw new Error("error happened"); // add a better handler here...
     }
@@ -41,12 +49,22 @@ async function updateGallery() {
     [...galleryContainer.children].forEach(child => galleryContainer.removeChild(child));
 
     // update with new ones
-    [...resultPaths].forEach(servePath => {
-        const imgElement = document.createElement('img');
-        galleryContainer.appendChild(imgElement);
-        imgElement.src = `/static${servePath}`;
-        imgElement.width = 200;
+    const newItems = [...resultPaths].map(({imagePath, thumbPath}, index) => {
+        // const item = document.createElement("a")
+        // item.href = getStaticSrc(imagePath);
+        // item.dataLgSize = "1600-2400"
+        // const nodeImg = document.createElement("img")
+        // nodeImg.src = getStaticSrc(thumbPath)
+        // item.appendChild(nodeImg)
+        // return item;
+        const item = document.createElement("a")
+        item.href = getStaticSrc(imagePath)
     });
+    galleryContainer.append(...newItems)
+    // Update LightGallery's gallery items
+    // lgallery.updateSlides(newItems);
+    // refresh LightGallery to display the new image
+    lgallery.refresh();
 }
 
 function handleImageSelect(event) {
@@ -92,3 +110,22 @@ imageInput.addEventListener('change', handleImageSelect);
 
 similarRequestButton.addEventListener('click', updateGallery)
 
+
+const lgallery = lightGallery(galleryContainer, {
+    speed: 500,
+    controls: false,
+    plugins: [lgZoom, lgThumbnail],
+    thumbnail: true
+});
+
+// galleryContainer.addEventListener("lgInit", (event) => {
+//     const pluginInstance = event.detail.instance;
+//     const $toolbar = pluginInstance.outer.find(".lg-toolbar");
+//     $toolbar.prepend(customButtons);
+//     document.getElementById("lg-toolbar-prev").addEventListener("click", () => {
+//         pluginInstance.goToPrevSlide();
+//     });
+//     document.getElementById("lg-toolbar-next").addEventListener("click", () => {
+//         pluginInstance.goToNextSlide();
+//     });
+// });
