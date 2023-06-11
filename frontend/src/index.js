@@ -5,45 +5,63 @@ import lgZoom from 'lightgallery/plugins/zoom'
 
 const domain = 'http://localhost:8765'
 const apiPrefix = `${domain}/api/v1`;
-const similarImagesAPI = `${apiPrefix}/similar_images/`
-const uploadImageAPI = `${apiPrefix}/upload_image/`
+
+async function extract_result(response_promise) {
+    const response = await response_promise
+    if(response.status !== 200) {
+        console.error("error happened", response)
+        throw new Error("status of the response is " + response.status)
+    }
+    const data = await response.json()
+    return data["result"]
+}
+
+const similarImagesAPI = ()=> (extract_result(
+    fetch(`${apiPrefix}/similar_images/`, {
+        credentials: "same-origin"
+    })
+))
+
+const getMySampleImages = ()=> (extract_result(
+    fetch(`${apiPrefix}/get_all_sample_images/`, {
+        credentials: "same-origin"
+    })
+))
+
+const uploadImageAPI = (image) => {
+    const form = new FormData()
+    form.append('image', image)
+    return extract_result(
+        fetch(`${apiPrefix}/add_sample_image/`, {
+            credentials: "same-origin",
+            method: 'POST',
+            body: form
+        })
+    )
+}
+
+const deleteSampleImage = (imagePath)=> (extract_result(
+    fetch(`${apiPrefix}/delete_sample_image/`, {
+        credentials: "same-origin",
+        method: 'DELETE',
+        body: JSON.stringify({imagePath}),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+))
 
 function getStaticSrc(relpath) {
     return "/static" + (relpath[0] === '/' ? "" : "/") + relpath
 }
 
 async function uploadFile(f) {
-    let form = new FormData();
-    form.append('image', f);
-    let resp = await fetch(uploadImageAPI, { method: 'POST', body:form });
-    if(resp.status !== 200) {
-        throw new Error("error happened");
-    }
-    let data = await resp.json();
-    let sampleImageList = data['result'];
-    updateSampleImageList(sampleImageList);
-}
-
-function updateSampleImageList(sampleList) {
-    // clear children
-    [...sampleImagesContainer.children].forEach(child => sampleImagesContainer.removeChild(child));
-
-    // update with new ones
-    [...sampleList].forEach(({imagePath, thumbPath}) => {
-        const imgElement = document.createElement('img');
-        sampleImagesContainer.appendChild(imgElement);
-        imgElement.src = getStaticSrc(imagePath);
-        imgElement.width = 200;
-    });
+    const sampleList = await uploadImageAPI(f)
+    updateSampleImageList(sampleList) // you may remove this since sample image list gets updated later
 }
 
 async function updateGallery() {
-    let resp = await fetch(similarImagesAPI);
-    if(resp.status !== 200) {
-        throw new Error("error happened"); // add a better handler here...
-    }
-    let data = await resp.json();
-    let resultPaths = data['result'];
+    const resultPaths = await similarImagesAPI();
 
     // clear children
     [...galleryContainer.children].forEach(child => galleryContainer.removeChild(child));
@@ -67,42 +85,46 @@ async function updateGallery() {
     lgallery.refresh();
 }
 
-function handleImageSelect(event) {
-    [...event.target.files].forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const div = document.createElement('div');
-            const imgElement = document.createElement('img');
-            const sendBtn = document.createElement('button');
-            const cancelBtn = document.createElement('button');
-            const info = document.createElement('span');
-
-            div.appendChild(imgElement);
-            div.appendChild(sendBtn);
-            div.appendChild(cancelBtn);
-            div.appendChild(info);
-            imgElement.src = e.target.result;
-            imgElement.width = 200;
-            sendBtn.textContent = 'submit';
-            sendBtn.addEventListener('click', () => (
-                uploadFile(file)
-                    .then(() => previewContainer.removeChild(div))
-                    .catch(e => info.textContent = e.toString())
-            ));
-            cancelBtn.textContent = 'cancel';
-            cancelBtn.addEventListener('click', () => previewContainer.removeChild(div));
-            previewContainer.appendChild(div);
-        };
-        reader.readAsDataURL(file);
+function updateSampleImageList(sampleList) {
+    // clear children
+    [...sampleImagesContainer.children].forEach(child => sampleImagesContainer.removeChild(child));
+    // todo rewrite with d3?
+    // update with new ones
+    [...sampleList].forEach(({imagePath, thumbPath}) => {
+        const div = document.createElement('div');
+        const imgElement = document.createElement('img');
+        const removeButton = document.createElement('button');
+        div.appendChild(imgElement);
+        div.appendChild(removeButton);
+        imgElement.src = getStaticSrc(imagePath);
+        imgElement.width = 200;
+        removeButton.textContent = 'remove';
+        removeButton.addEventListener('click', () => {
+            deleteSampleImage(imagePath)
+                .then(newSampleList => updateSampleImageList(newSampleList))
+        });
+        sampleImagesContainer.appendChild(div);
     });
-
-    form.reset();
 }
 
-const previewContainer = document.getElementById('preview-container');
+async function asyncHandleImageSelect(event) {
+    const uploadRequests = [...event.target.files].map(file => uploadFile(file))
+    await Promise.all(uploadRequests)
+    form.reset();
+    const sampleList = await getMySampleImages()
+    console.log(sampleList)
+    updateSampleImageList(sampleList)
+}
+
+function handleImageSelect(event) {
+    asyncHandleImageSelect(event).catch(console.error)
+}
+
 const sampleImagesContainer = document.getElementById('sample-images-container');
 const galleryContainer = document.getElementById('gallery-container');
 const similarRequestButton = document.getElementById('similar-request-button')
+// todo add some limit that you are not able to press this button twice without having changed anything
+// todo or put some rate limiter on server
 
 const form = document.getElementById('upload-form');
 const imageInput = document.getElementById('image-input');
@@ -129,3 +151,6 @@ const lgallery = lightGallery(galleryContainer, {
 //         pluginInstance.goToNextSlide();
 //     });
 // });
+
+// initialize sample data:
+getMySampleImages().then(updateSampleImageList).catch(console.error)

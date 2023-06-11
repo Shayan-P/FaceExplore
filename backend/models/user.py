@@ -24,11 +24,11 @@ class User:
         """ returns all sample_image_items """
         return list(self.sample_image_items)  # defensive copy
 
-    def remove_sample_image_item(self, serve_path):
+    def remove_sample_image_item(self, image_path):
         """ returns all sample_image_items """
         self.__previous_similarity_result = None # have to recalculate
         self.sample_image_items = [item for item in self.sample_image_items
-                                   if item.get_serve_path() != serve_path]
+                                   if item.get_serve_path()["imagePath"] != image_path]
         return list(self.sample_image_items)  # defensive copy
 
     def add_sample_image_item(self, image: Image):

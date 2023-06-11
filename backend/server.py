@@ -32,26 +32,45 @@ def setup_session():
     session['user'] = User.get_or_create_user(session['session_id'])
 
 
-@app.route('/upload_image/', methods=['POST'])
-def upload_image_api():
+@app.route('/add_sample_image/', methods=['POST'])
+def add_sample_image():
     """saves the image that user uploads to their session"""
 
     user: User = session['user']
 
     if 'image' not in request.files:
-        return jsonify({'error': 'no image file found'}), HTTPStatus.BAD_REQUEST
+        return jsonify({'result': 'no image file found'}), HTTPStatus.BAD_REQUEST
 
-    # todo test for cases where multiple images are there and single
     image = request.files['image']
     if image.filename == '':
-        return jsonify({'error': 'no image selected'}), HTTPStatus.BAD_REQUEST
+        return jsonify({'result': 'no image selected'}), HTTPStatus.BAD_REQUEST
     try:
         image_data = image.read()
         img = Image.open(BytesIO(image_data))
-        result = user.add_sample_image_item(img)
-        return jsonify({'result': [item.get_serve_path() for item in result]}), HTTPStatus.OK
+        query = user.add_sample_image_item(img)
+        result = [item.get_serve_path() for item in query]
+        return jsonify({'result': result}), HTTPStatus.OK
     except Exception as e:
-        return jsonify({'error': 'Failed to process the image', 'details': str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
+        return jsonify({'result': 'Failed to process the image\n' + 'details:' + str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@app.route('/get_all_sample_images/', methods=['GET'])
+def get_all_sample_images():
+    """gets all sample images that user has uploaded"""
+    user: User = session['user']
+    query = user.get_all_sample_image_items()
+    result = [item.get_serve_path() for item in query]
+    return jsonify({'result': result}), HTTPStatus.OK
+
+
+@app.route('/delete_sample_image/', methods=['DELETE'])
+def delete_sample_image():
+    """deletes the sample image with the same serve_path in the request"""
+    user: User = session['user']
+    image_path = request.json['imagePath']
+    query = user.remove_sample_image_item(image_path)
+    result = [item.get_serve_path() for item in query]
+    return jsonify({'result': result}), HTTPStatus.OK
 
 
 @app.route('/similar_images/', methods=['GET'])
