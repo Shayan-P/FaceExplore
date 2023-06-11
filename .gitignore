@@ -3,6 +3,7 @@
 **/image-serve-path
 **/flask_session
 **/__pycache__
+**/node_modules
 
 backend/hidden_settings.py
 **/dist
