@@ -40,7 +40,11 @@ class User:
         return list(self.sample_image_items)  # defensive copy
 
     def get_similar_images(self) -> list["ImageItem"]:
-        if self.__previous_similarity_result is None:
-            # cache the result while no change happens to this user's input
-            self.__previous_similarity_result = similar_images([item.get_image() for item in self.sample_image_items])
-        return self.__previous_similarity_result
+        # todo investigate what the problem with caching is...
+        # if self.__previous_similarity_result is None:
+        #     # cache the result while no change happens to this user's input
+        #     sample_images = [item.get_image() for item in self.sample_image_items]
+        #     self.__previous_similarity_result = similar_images(sample_images)
+        # return self.__previous_similarity_result
+        sample_images = [item.get_image() for item in self.sample_image_items]
+        return similar_images(sample_images)
