@@ -18,6 +18,7 @@ class ImageModelWrapper:
 
         if with_thumb:
             self.__create_thumbnail()
+        self.thumbnail_path = os.path.normpath(self.thumbnail_path)
 
     def __create_thumbnail(self):
         rest = os.path.relpath(self.filepath, IMAGE_SERVE_PATH)

@@ -4,7 +4,7 @@ import pickle
 from tqdm import tqdm
 from backend.settings import GALLERY_IMAGE_PATH, TEMP_PICKLE_PATH, PICKLE_PATH
 from .models import ImageModel
-from .load import load_faces, load_clusters
+from .models import load_clusters
 
 
 def recursive_file_search(path):
@@ -60,14 +60,12 @@ def load_all_image_items():
                 count_added += 1
                 if count_added % 20 == 0:
                     save_pickle(TEMP_PICKLE_PATH)
-                item = ImageModel(path)
-                item = load_faces(item)
+                item = ImageModel(path, do_load_faces=True)
                 ALL_IMAGE_ITEMS.append(item)
             except Exception as e:
                 print(e)
         for item in ALL_IMAGE_ITEMS:
             item.filepath = os.path.normpath(item.filepath)
-            item.thumbnail_path = os.path.normpath(item.thumbnail_path)
         print("loaded ", len(ALL_IMAGE_ITEMS), "images")
 
         gallery_path_set = set(images_in_gallery)

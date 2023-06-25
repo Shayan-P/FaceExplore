@@ -1,6 +1,5 @@
 import sys
 from io import BytesIO
-
 from flask import Flask, jsonify, session, request
 from flask_session import Session
 from uuid import uuid4
@@ -49,6 +48,7 @@ def add_sample_image():
         image_data = image.read()
         img = Image.open(BytesIO(image_data))
         query = user.add_sample_image_item(img)
+
         result = [item.get_serve_path() for item in query]
         return jsonify({'result': result}), HTTPStatus.OK
     except Exception as e:
@@ -81,6 +81,12 @@ def similar_images_api():
     user: User = session['user']
     result = [item.get_serve_path() for item in user.get_similar_images()]
     return jsonify({'result': result})
+
+
+@app.errorhandler(500)
+def internal_server_error(e):  # todo avoid to send internal errors outside?!
+    print(e)  # todo add some logger instead of this
+    return "internal server error"  # todo make this better and more informative...
 
 
 if __name__ == '__main__':

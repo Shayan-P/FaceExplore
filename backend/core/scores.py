@@ -16,7 +16,8 @@ def similarity_item(all_samples, item: ImageModel):
 
     global_embeddings.extend([face.embedding for face in item.faces])
     for item in all_samples:
-        sample_embeddings.extend(item.embedding)
+        for face in item.faces:
+            sample_embeddings.append(face.embedding)
     return similarity_embeddings(global_embeddings, sample_embeddings)
 
 
@@ -27,7 +28,8 @@ def similarity_cluster(all_samples, cluster):
     for face in cluster.faces:
         global_embeddings.append(face.embedding)
     for item in all_samples:
-        sample_embeddings.extend(item.embedding)
+        for face in item.faces:
+            sample_embeddings.append(face.embedding)
     return similarity_embeddings(global_embeddings, sample_embeddings)
 
 
