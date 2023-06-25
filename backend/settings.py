@@ -7,8 +7,8 @@ IMAGE_SERVE_PATH = os.path.normpath(os.path.join(PROJECT_PATH, "image-serve-path
 GALLERY_IMAGE_PATH = os.path.normpath(os.path.join(IMAGE_SERVE_PATH, "gallery-image"))
 USER_IMAGE_PATH = os.path.normpath(os.path.join(IMAGE_SERVE_PATH, "user-image"))
 THUMB_IMAGE_PATH = os.path.normpath(os.path.join(IMAGE_SERVE_PATH, "thumbnail"))
-DEBUG_IMAGE_PATH = os.path.normpath(os.path.join(IMAGE_SERVE_PATH, "debug"))
-DEBUG_THUMB_IMAGE_PATH = os.path.normpath(os.path.join(IMAGE_SERVE_PATH, "thumb_debug"))
+# DEBUG_IMAGE_PATH = os.path.normpath(os.path.join(IMAGE_SERVE_PATH, "debug"))
+# DEBUG_THUMB_IMAGE_PATH = os.path.normpath(os.path.join(IMAGE_SERVE_PATH, "thumb_debug"))
 
 PICKLE_PATH = os.path.normpath(os.path.join(IMAGE_SERVE_PATH, "image-cache.pkl"))
 TEMP_PICKLE_PATH = os.path.normpath(os.path.join(IMAGE_SERVE_PATH, "temp-image-cache.pkl"))

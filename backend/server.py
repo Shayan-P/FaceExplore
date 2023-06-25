@@ -9,6 +9,7 @@ from http import HTTPStatus
 
 sys.path.append("..")
 
+from backend.load import load
 from backend.models.user import User
 from backend.settings import DEFAULT_HOST, DEFAULT_PORT, SECRET_KEY, SESSION_COOKIE_NAME
 
@@ -83,4 +84,5 @@ def similar_images_api():
 
 
 if __name__ == '__main__':
+    load()  # setup everything before we begin
     app.run(DEFAULT_HOST, DEFAULT_PORT)
