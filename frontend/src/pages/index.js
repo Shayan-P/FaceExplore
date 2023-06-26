@@ -3,6 +3,7 @@ import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgZoom from 'lightgallery/plugins/zoom';
 import LightGallery from 'lightgallery/react';
 import {similarImagesAPI, deleteSampleImage, getMySampleImages, uploadSampleImage, getStaticSrc} from "../utils/api";
+import {CircularProgress} from "@mui/material";
 
 import './style.css'
 import 'lightgallery/css/lightgallery.css';
@@ -14,7 +15,7 @@ const SampleContainer = ({samplePaths, updateSamplePaths}) => {
     useEffect(updateSamplePaths, []);
     // todo maybe improve this by not inputting samplePaths?
     if(!samplePaths){
-        return <div>Loading...</div>
+        return <CircularProgress />
     } else {
         return (
             [...samplePaths].map(({imagePath, thumbPath}) => (
@@ -73,7 +74,7 @@ const FormContainer = ({updateSamplePaths}) => {
 
     return (
         <form ref={formRef} encType="multipart/form-data" onChange={update}>
-            {loading ? <span>is Loading</span> : []}
+            {loading ? <CircularProgress /> : []}
             <input type="file" id="image-input" name="images" accept="image/*" multiple />
         </form>
     )
