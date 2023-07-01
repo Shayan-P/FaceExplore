@@ -9,8 +9,7 @@ backend/hidden_settings.py
 **/dist
 **/.cache
 **/dist
-**/public
 experiment/*
 
-frontend/sample-images
+**/sample-images
 

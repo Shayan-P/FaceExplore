@@ -8,17 +8,8 @@ import 'lightgallery/css/lightgallery.css';
 import 'lightgallery/css/lg-zoom.css';
 import 'lightgallery/css/lg-thumbnail.css';
 
-export default () => {
-    const [paths, setPaths] = useState([]);
-    const update = () => similarImagesAPI().then(res => setPaths(res))
 
-    return <>
-        <button onClick={update}>click to see your images</button>
-        <innerContainer paths={paths}/>
-    </>
-}
-
-function innerContainer({paths}) {
+export default function GalleryContainer({paths}) {
     return (
         <LightGallery
             onInit={()=>console.log('lightGallery has been initialized')}
@@ -26,7 +17,7 @@ function innerContainer({paths}) {
             plugins={[lgThumbnail, lgZoom]}
         >
             {[...paths].map(({imagePath, thumbPath}) => (
-                <a href={getStaticSrc(imagePath)}>
+                <a key={imagePath} href={getStaticSrc(imagePath)}>
                     <img alt={getStaticSrc(imagePath)} src={getStaticSrc(thumbPath)} width={200}/>
                     {/*todo remove this hardcoded 200*/}
                 </a>

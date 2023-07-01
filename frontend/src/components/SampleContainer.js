@@ -10,7 +10,7 @@ export default ({samplePaths, updateSamplePaths}) => {
     } else {
         return (
             [...samplePaths].map(({imagePath, thumbPath}) => (
-                <div>
+                <div key={imagePath}>
                     <img src={getStaticSrc(imagePath)} width={200} alt={imagePath}/>
                     <button onClick={()=>{
                         deleteSampleImage(imagePath).then(updateSamplePaths)
