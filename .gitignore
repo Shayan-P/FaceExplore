@@ -11,3 +11,6 @@ backend/hidden_settings.py
 **/dist
 **/public
 experiment/*
+
+frontend/sample-images
+

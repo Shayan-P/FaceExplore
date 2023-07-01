@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgZoom from 'lightgallery/plugins/zoom';
 import LightGallery from 'lightgallery/react';
-import {similarImagesAPI, deleteSampleImage, getMySampleImages, uploadSampleImage, getStaticSrc} from "../utils/api";
+import {similarImagesAPI, deleteSampleImage, getMySampleImages, uploadSampleImage, getStaticSrc} from "../api/dummy-api";
 import {CircularProgress} from "@mui/material";
 
 import './style.css'
@@ -39,7 +39,8 @@ const GalleryContainer = ({paths}) => {
         >
             {[...paths].map(({imagePath, thumbPath}) => (
                 <a href={getStaticSrc(imagePath)}>
-                    <img alt={getStaticSrc(imagePath)} src={getStaticSrc(thumbPath)} />
+                    <img alt={getStaticSrc(imagePath)} src={getStaticSrc(thumbPath)} width={200}/>
+                    {/*todo remove this hardcoded 200*/}
                 </a>
             ))}
         </LightGallery>
