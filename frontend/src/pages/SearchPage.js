@@ -10,53 +10,69 @@ import Beaver from "../components/beaver/Beaver";
 import TalkBubble from "../components/talk-bubble/TalkBubble";
 
 export default function SearchPage() {
-    const [samplePaths, setSamplePaths] = useState([])
-    const [beaverText, setBeaverText] = useState('')
+    const [facesReady, setFacesReady] = useState(false)
 
-    const updateSamplePaths = () => {
-        getMySampleImages()
-            .then(responseData => {
-                setSamplePaths(responseData);
-                if(responseData.length > 0) { // todo change this to something from backend
-                    setBeaverText(<span>you did it!<br /> Go on and click
+    let myBeaverText = '';
+    if(facesReady) {
+        myBeaverText = <span>you did it!<br /> Go on and click
                         <Button><Link to={"/gallery"}>submit</Link></Button>
                         to see the result</span>
-                    )
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
     }
 
     return (
         <>
             <Container maxWidth="md" sx={{ height: "100vh" }}>
                 <Stack spacing={2}>
-                    <RainbowTypography
-                        variant="h2"
-                        sx={{ display: "block", p: 2}}
-                        textAlign="center"
-                        font={"Shantell Sans"}
-                    >
-                        Looking for yourself?
-                    </RainbowTypography>
-
-                    <RainbowTypography
-                        variant="h6"
-                        sx={{ display: "block", p: 2}}
-                        textAlign="center"
-                        font={"Shantell Sans"}
-                    >
-                        search for your photos by uploading a sample photo
-                    </RainbowTypography>
-                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", p: 5}}>
-                        <FormContainer updateSamplePaths={updateSamplePaths}/>
-                        <FaceSampleContainer samplePaths={samplePaths} updateSamplePaths={updateSamplePaths}/>
-                    </Box>
+                    <Header />
+                    <UploadBox setFacesReady={setFacesReady} />
                 </Stack>
             </Container>
-            <Beaver talkBubbleElement={<TalkBubble text={beaverText} />}/>
+            <Beaver talkBubbleElement={<TalkBubble text={myBeaverText} />}/>
         </>
     )
+}
+
+
+function Header() {
+    return <>
+        <RainbowTypography
+            variant="h2"
+            sx={{ display: "block", p: 2}}
+            textAlign="center"
+            font={"Shantell Sans"}
+        >
+            Looking for yourself?
+        </RainbowTypography>
+
+        <RainbowTypography
+            variant="h6"
+            sx={{ display: "block", p: 2}}
+            textAlign="center"
+            font={"Shantell Sans"}
+        >
+            search for your photos by uploading a sample photo
+        </RainbowTypography>
+    </>
+}
+
+function UploadBox({setFacesReady}) {
+    const [samplePaths, setSamplePaths] = useState([])
+
+    const updateSamplePaths = () => {
+        getMySampleImages()
+            .then(responseData => {
+                setSamplePaths(responseData);
+                setFacesReady(responseData.length > 0) // todo what to do with errors?
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
+
+    return <>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", p: 5}}>
+            <FormContainer updateSamplePaths={updateSamplePaths}/>
+            <FaceSampleContainer samplePaths={samplePaths} updateSamplePaths={updateSamplePaths}/>
+        </Box>
+    </>
 }
