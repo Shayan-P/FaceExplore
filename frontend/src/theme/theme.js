@@ -30,7 +30,7 @@ const rawTheme = createTheme({
         },
     },
     typography: {
-        fontFamily: "'Bahij', sans-serif",
+        fontFamily: "Shantell Sans, sans-serif",
         fontWeightLight: 300, // Work Sans
         fontWeightRegular: 400, // Work Sans
         fontWeightMedium: 700, // Roboto Condensed
