@@ -1,0 +1,12 @@
+.my-preview {
+    margin: 10px !important;
+    transition: ease-in-out 0.3s;
+}
+
+.my-preview:hover {
+    box-shadow: 0 0 4px rgba(34, 31, 203, 0.31),
+                0 0 6px rgba(34, 31, 203, 0.31),
+                0 0 6px rgba(34, 31, 203, 0.31),
+                0 0 6px rgba(34, 31, 203, 0.31);
+    transform: scale(1.01);
+}

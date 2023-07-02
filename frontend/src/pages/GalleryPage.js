@@ -1,8 +1,8 @@
-import GalleryContainer from "../components/GalleryContainer";
+import GalleryContainer from "../components/gallery/GalleryContainer";
 import React, {useEffect, useState} from "react";
 import {similarImagesAPI} from "../api/api";
 import RainbowTypography from "../components/RainbowTypography";
-import {Container, Stack} from "@mui/material";
+import {Box, Container, Stack} from "@mui/material";
 import Beaver from "../components/beaver/Beaver";
 import TalkBubble from "../components/talk-bubble/TalkBubble";
 
@@ -19,7 +19,9 @@ export default function GalleryPage() {
                                        textAlign={'center'}
                                        sx={{ display: "block", p: 2}}
                     > Look! We found you! </RainbowTypography>
-                    <GalleryContainer paths={paths} />
+                    <Box sx={{display: "flex", justifyContent: "center"}}>
+                        <GalleryContainer paths={paths} />
+                    </Box>
                 </Stack>
             </Container>
             <Beaver talkBubbleElement={<TalkBubble text={'click on images to download them 😁'} />}/>
