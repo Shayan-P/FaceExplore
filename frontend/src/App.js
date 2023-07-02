@@ -20,7 +20,7 @@ export default function App() {
             <BrowserRouter>
                 <ThemeProvider theme={theme}>
                     <CssBaseline/>
-                    <ErrorBoundary><ErrorSnackbar>
+                    {/*<ErrorBoundary><ErrorSnackbar>*/}
                         <Beaver />
                         <Routes>
                             <Route exact path="/" element={<SearchPage />} />
@@ -29,7 +29,8 @@ export default function App() {
                             <Route path="*" element={<NotFound />} />
                             {/*todo add not found page*/}
                         </Routes>
-                    </ErrorSnackbar></ErrorBoundary>
+                    {/*todo fix error boundary*/}
+                    {/*</ErrorSnackbar></ErrorBoundary>*/}
                 </ThemeProvider>
             </BrowserRouter>
         </div>

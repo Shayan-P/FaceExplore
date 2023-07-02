@@ -1,0 +1,29 @@
+.avatar-container {
+    border-radius: 50%;
+    border-bottom-width: 3px;
+    border-style: solid;
+    border-color: #9d672c;
+    width: 20vh;
+    height: 20vh;
+    transition: ease-in-out 0.5s;
+    position: relative;
+}
+
+.avatar-container:hover {
+    transform: scale(1.01);
+}
+
+.avatar-container .delete-icon {
+    transition: ease-in-out 0.5s;
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+    right: 40%;
+    top: 40%;
+}
+
+.avatar-container:hover .delete-icon {
+    opacity: 1;
+    right: -4%;
+    top: -4%;
+}

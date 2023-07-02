@@ -29,7 +29,7 @@ function wrapData(img) {
 
 export const similarImagesAPI = ()=> Promise.resolve(randomChoices([img1, img2, img3, img4, img5, img6, img7], 5).map(wrapData))
 
-export const getMySampleImages = ()=> Promise.resolve([img1, img2].map(wrapData))
+export const getMySampleImages = ()=> Promise.resolve([img1, img2, img3, img4, img5].map(wrapData))
 
 export const uploadSampleImage = (image) => {
     return  new Promise((resolve) => {

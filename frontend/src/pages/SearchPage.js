@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {getMySampleImages} from "../api/dummy-api";
 import FormContainer from "../components/FormContainer";
-import SampleContainer from "../components/SampleContainer";
+import FaceSampleContainer from "../components/face-sample-container/FaceSampleContainer";
 import { Link } from "react-router-dom"
 import {Box, Container, Stack} from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -42,7 +42,7 @@ export default function SearchPage() {
                 </RainbowTypography>
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", p: 5}}>
                     <FormContainer updateSamplePaths={updateSamplePaths}/>
-                    <SampleContainer samplePaths={samplePaths} updateSamplePaths={updateSamplePaths}/>
+                    <FaceSampleContainer samplePaths={samplePaths} updateSamplePaths={updateSamplePaths}/>
                     <Link to={"/gallery"}>See the result</Link>
                 </Box>
             </Stack>
