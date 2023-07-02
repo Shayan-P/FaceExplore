@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {getMySampleImages} from "../api/dummy-api";
+import {getMySampleImages} from "../api/api";
 import FormContainer from "../components/FormContainer";
 import FaceSampleContainer from "../components/face-sample-container/FaceSampleContainer";
 import { Link } from "react-router-dom"

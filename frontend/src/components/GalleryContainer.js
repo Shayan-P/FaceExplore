@@ -1,7 +1,7 @@
 import LightGallery from "lightgallery/react";
 import lgThumbnail from "lightgallery/plugins/thumbnail";
 import lgZoom from "lightgallery/plugins/zoom";
-import {getStaticSrc, similarImagesAPI} from "../api/dummy-api";
+import {getStaticSrc, similarImagesAPI} from "../api/api";
 import React, {useState} from "react";
 
 import 'lightgallery/css/lightgallery.css';

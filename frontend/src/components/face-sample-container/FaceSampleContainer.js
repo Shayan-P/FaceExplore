@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {Avatar, Box, Button, CircularProgress} from "@mui/material";
-import {getStaticSrc, deleteSampleImage} from "../../api/dummy-api";
+import {getStaticSrc, deleteSampleImage} from "../../api/api";
 import './style.css';
 import DeleteIcon from '@mui/icons-material/Delete';
 

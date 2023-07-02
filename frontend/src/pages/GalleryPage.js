@@ -1,6 +1,6 @@
 import GalleryContainer from "../components/GalleryContainer";
 import React, {useEffect, useState} from "react";
-import {similarImagesAPI} from "../api/dummy-api";
+import {similarImagesAPI} from "../api/api";
 
 export default function GalleryPage() {
     const [paths, setPaths] = useState([])

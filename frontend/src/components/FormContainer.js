@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {uploadSampleImage} from "../api/dummy-api";
+import {uploadSampleImage} from "../api/api";
 import {Box, CircularProgress} from "@mui/material";
 import ImageUploader from './image-uploader/ImageUploader'
 
