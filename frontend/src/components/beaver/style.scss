@@ -9,6 +9,10 @@
     width: $BeaverWidth;
     height: $BeaverHeight;
   }
+  .beaver-talk-bubble {
+    position: absolute;
+    bottom: calc(0.7 * #{$BeaverWidth});
+  }
 }
 
 @media (min-width: 600px) and (max-width: 1024px) {
@@ -21,6 +25,10 @@
   .canvas {
     width: $BeaverWidth;
     height: $BeaverHeight;
+  }
+  .beaver-talk-bubble {
+    position: absolute;
+    bottom: calc(0.7 * #{$BeaverWidth});
   }
 }
 
@@ -35,6 +43,10 @@
     width: $BeaverWidth;
     height: $BeaverHeight;
   }
+  .beaver-talk-bubble {
+    position: absolute;
+    bottom: calc(0.7 * #{$BeaverWidth});
+  }
 }
 
 @media (min-width: 1025px) {
@@ -47,6 +59,10 @@
   .canvas {
     width: $BeaverWidth;
     height: $BeaverHeight;
+  }
+  .beaver-talk-bubble {
+    position: absolute;
+    bottom: calc(0.7 * #{$BeaverWidth});
   }
 }
 

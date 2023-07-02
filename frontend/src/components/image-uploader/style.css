@@ -1,0 +1,13 @@
+.capsule-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    width: 100%;
+    border-radius: 30px;
+    padding: 0 20px;
+}
+
+.capsule-bar:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

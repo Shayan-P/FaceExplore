@@ -21,7 +21,6 @@ export default function App() {
                 <ThemeProvider theme={theme}>
                     <CssBaseline/>
                     {/*<ErrorBoundary><ErrorSnackbar>*/}
-                        <Beaver />
                         <Routes>
                             <Route exact path="/" element={<SearchPage />} />
                             <Route exact path="/gallery" element={<GalleryPage />} />

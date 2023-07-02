@@ -1,8 +1,15 @@
 import './style.scss'
+import TalkBubble from "../talk-bubble/TalkBubble";
 
-export default function Beaver() {
+export default function Beaver({talkBubbleElement}) {
     return (
         <div className='beaver-container'>
+            {talkBubbleElement
+                ?   <div className={'beaver-talk-bubble'}>
+                        {talkBubbleElement}
+                    </div>
+                : null
+            }
             <div className='canvas'>
                 <div className='shadow'></div>
                 <div className='tail'>
