@@ -31,7 +31,12 @@ export const similarImagesAPI = ()=> Promise.resolve(randomChoices([img1, img2, 
 
 export const getMySampleImages = ()=> Promise.resolve([img1, img2].map(wrapData))
 
-export const uploadSampleImage = (image) => Promise.resolve([img1, img2, img3].map(wrapData))
+export const uploadSampleImage = (image) => {
+    return  new Promise((resolve) => {
+        setTimeout(()=>resolve([img1, img2, img3].map(wrapData)),
+            1000)
+    });
+}
 
 export const deleteSampleImage = (imagePath)=> Promise.resolve([img1, img2, img3].map(wrapData))
 
