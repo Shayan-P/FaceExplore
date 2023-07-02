@@ -12,6 +12,7 @@ import SearchPage from "./pages/SearchPage";
 import GalleryPage from "./pages/GalleryPage";
 import DevPage from "./pages/DevPage";
 import NotFound from "./pages/NotFound";
+import Beaver from "./components/beaver/Beaver";
 
 export default function App() {
     return (
@@ -20,6 +21,7 @@ export default function App() {
                 <ThemeProvider theme={theme}>
                     <CssBaseline/>
                     <ErrorBoundary><ErrorSnackbar>
+                        <Beaver />
                         <Routes>
                             <Route exact path="/" element={<SearchPage />} />
                             <Route exact path="/gallery" element={<GalleryPage />} />
