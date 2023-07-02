@@ -20,7 +20,7 @@ app.config['SECRET_KEY'] = SECRET_KEY
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_COOKIE_NAME'] = SESSION_COOKIE_NAME
-app.config['SESSION_COOKIE_SECURE'] = True  # Enable secure (HTTPS) session cookies
+app.config['SESSION_COOKIE_SECURE'] = False  # Enable secure (HTTPS) session cookies. todo change this back to True
 Session(app)
 
 

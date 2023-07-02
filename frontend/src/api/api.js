@@ -1,4 +1,4 @@
-const domain = 'http://localhost:8765' // todo get that from an ENV variable
+const domain = 'http://' + window.location.host; // todo get that from an ENV variable
 const apiPrefix = `${domain}/api/v1`;
 
 async function extract_result(response_promise) {
@@ -47,5 +47,5 @@ export const deleteSampleImage = (imagePath)=> (extract_result(
 ))
 
 export function getStaticSrc(relpath) {
-    return "/static" + (relpath[0] === '/' ? "" : "/") + relpath
+    return "/api/v1/static" + (relpath[0] === '/' ? "" : "/") + relpath
 }
