@@ -23,7 +23,7 @@ export default function SearchPage() {
         <>
             <Container maxWidth="md" sx={{ height: "100vh" }}>
                 <Stack spacing={2}>
-                    <Header />
+                    <Header facesReady={facesReady} />
                     <UploadBox setFacesReady={setFacesReady} />
                 </Stack>
             </Container>
@@ -33,7 +33,7 @@ export default function SearchPage() {
 }
 
 
-function Header() {
+function Header({facesReady}) {
     return <>
         <RainbowTypography
             variant="h2"
@@ -52,6 +52,19 @@ function Header() {
         >
             search for your photos by uploading a sample photo
         </RainbowTypography>
+
+        {facesReady?
+            <RainbowTypography
+                variant="span"
+                sx={{ display: "block"}}
+                textAlign="center"
+                font={"Shantell Sans"}
+            >
+                to get an accurate result, remove <br/>
+                the faces that do not represent your <br/>
+                face by clicking on them
+            </RainbowTypography>
+        : []}
     </>
 }
 
