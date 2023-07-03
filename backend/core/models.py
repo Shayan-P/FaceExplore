@@ -16,20 +16,47 @@ class FaceModel:
         # todo be careful. the size might be high
         return self.image_item.get_image().crop(self.bb)
 
+    def get_bb_percentage(self):
+        return [self.bb[0] / self.image_item.im_width,
+                self.bb[1] / self.image_item.im_height,
+                self.bb[2] / self.image_item.im_width,
+                self.bb[3] / self.image_item.im_height
+        ]
+
+    def get_extended_bb(self):
+        x, y, xx, yy = self.bb
+        dx = (xx - x) * 0.3
+        dy = (yy - y) * 0.3
+        return [
+            max(0, x-dx),
+            max(0, y-dy),
+            min(self.image_item.im_width, xx+dx),
+            min(self.image_item.im_height, yy+dy)
+        ]
+
+    def get_id(self):
+        return f"{self.image_item.get_id()}|{str([f'{x:.3f}' for x in self.bb])}"
+
 
 class ImageModel:
     """represents an image in the collection"""
 
     def __init__(self, filepath: str, do_load_faces=True):
         self.filepath = filepath
-        self.faces = []
+        self.faces: ["FaceModel"] = []
         if do_load_faces:
             load_faces(self)
+        im = self.get_image()  # todo not load this all the time. do it in a better way
+        self.im_width, self.im_height = im.size
 
     def get_image(self) -> Image:
         image = Image.open(self.filepath)
         # todo be careful. the size might be high
         return image
+
+    def get_id(self):
+        # todo better id?
+        return self.filepath
 
 
 class ClusterModel:

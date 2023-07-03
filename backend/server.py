@@ -49,7 +49,7 @@ def add_sample_image():
         img = Image.open(BytesIO(image_data))
         query = user.add_sample_image_item(img)
 
-        result = [item.get_serve_path() for item in query]
+        result = [item.get_json() for item in query]
         return jsonify({'result': result}), HTTPStatus.OK
     except Exception as e:
         return jsonify({'result': 'Failed to process the image\n' + 'details:' + str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
@@ -60,7 +60,7 @@ def get_all_sample_images():
     """gets all sample images that user has uploaded"""
     user: User = session['user']
     query = user.get_all_sample_image_items()
-    result = [item.get_serve_path() for item in query]
+    result = [item.get_json() for item in query]
     return jsonify({'result': result}), HTTPStatus.OK
 
 
@@ -68,9 +68,19 @@ def get_all_sample_images():
 def delete_sample_image():
     """deletes the sample image with the same serve_path in the request"""
     user: User = session['user']
-    image_path = request.json['imagePath']
-    query = user.remove_sample_image_item(image_path)
-    result = [item.get_serve_path() for item in query]
+    image_id = request.json['imageId']
+    query = user.remove_sample_image_item(image_id)
+    result = [item.get_json() for item in query]
+    return jsonify({'result': result}), HTTPStatus.OK
+
+
+@app.route('/delete_sample_face/', methods=['DELETE'])
+def delete_sample_face():
+    """deletes the sample image with the same serve_path in the request"""
+    user: User = session['user']
+    face_id = request.json['faceId']
+    query = user.remove_sample_face(face_id)
+    result = [item.get_json() for item in query]
     return jsonify({'result': result}), HTTPStatus.OK
 
 
@@ -79,7 +89,7 @@ def similar_images_api():
     """returns the serve paths of the similar images"""
 
     user: User = session['user']
-    result = [item.get_serve_path() for item in user.get_similar_images()]
+    result = [item.get_json() for item in user.get_similar_images()]
     return jsonify({'result': result})
 
 

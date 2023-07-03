@@ -25,12 +25,22 @@ class User:
         """ returns all sample_image_items """
         return [ImageModelWrapper(m) for m in self.sample_image_items]  # defensive copy
 
-    def remove_sample_image_item(self, image_path):
+    def remove_sample_image_item(self, image_id):
         """ returns all sample_image_items """
         self.__previous_similarity_result = None  # have to recalculate
         self.sample_image_items = [item for item in self.sample_image_items
-                                   if ImageModelWrapper(item).get_serve_path()["imagePath"] != image_path]
-        # todo. have a better identifier for images
+                                   if item.get_id() != image_id]
+        return self.get_all_sample_image_items()
+
+    def remove_sample_face(self, face_id):
+        """ returns all sample_image_items """
+        self.__previous_similarity_result = None  # have to recalculate
+        new_sample_image_items = []
+        for item in self.sample_image_items:
+            item.faces = [face for face in item.faces if face.get_id() != face_id]
+            if len(item.faces) > 0:
+                new_sample_image_items.append(item)
+        self.sample_image_items = new_sample_image_items
         return self.get_all_sample_image_items()
 
     def add_sample_image_item(self, image: Image):
@@ -43,6 +53,11 @@ class User:
         return self.get_all_sample_image_items()
 
     def get_similar_images(self) -> list["ImageModelWrapper"]:
+        if len(self.sample_image_items) == 0:
+            raise Exception("no sample image is provided")
+        if sum([len(item.faces) for item in self.sample_image_items]) == 0:
+            raise Exception("we found no face in the samples")
+
         # todo change this to a yield over clusters...
 
         annot = [(cluster, *similarity_cluster(self.sample_image_items, cluster)) for cluster in

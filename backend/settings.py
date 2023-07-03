@@ -7,6 +7,7 @@ IMAGE_SERVE_PATH = os.path.normpath(os.path.join(PROJECT_PATH, "image-serve-path
 GALLERY_IMAGE_PATH = os.path.normpath(os.path.join(IMAGE_SERVE_PATH, "gallery-image"))
 USER_IMAGE_PATH = os.path.normpath(os.path.join(IMAGE_SERVE_PATH, "user-image"))
 THUMB_IMAGE_PATH = os.path.normpath(os.path.join(IMAGE_SERVE_PATH, "thumbnail"))
+FACES_PATH = os.path.normpath(os.path.join(IMAGE_SERVE_PATH, 'faces'))
 # DEBUG_IMAGE_PATH = os.path.normpath(os.path.join(IMAGE_SERVE_PATH, "debug"))
 # DEBUG_THUMB_IMAGE_PATH = os.path.normpath(os.path.join(IMAGE_SERVE_PATH, "thumb_debug"))
 
