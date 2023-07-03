@@ -60,8 +60,8 @@ function Header({facesReady}) {
                 font={"Shantell Sans"}
             >
                 to get an accurate result, remove <br/>
-                the faces that do not represent your <br/>
-                face by clicking on them
+                the faces other than yours <br/>
+                by clicking on them
             </RainbowTypography>
         : []}
     </>
