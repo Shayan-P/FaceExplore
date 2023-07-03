@@ -1,21 +1,27 @@
 import React, {useEffect} from "react";
 import {Avatar, Box, Button, CircularProgress} from "@mui/material";
-import {getStaticSrc, deleteSampleImage} from "../../api/api";
+import {getStaticSrc, deleteSampleImage, deleteSampleFace} from "../../api/api";
 import './style.css';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-export default ({samplePaths, updateSamplePaths}) => {
-    useEffect(updateSamplePaths, []);
-    // todo maybe improve this by not inputting samplePaths?
-    if(!samplePaths){
+export default ({sampleImageItems, updateSampleImageItems}) => {
+    useEffect(updateSampleImageItems, []);
+    if(!sampleImageItems){
         return <CircularProgress />
     } else {
+        const faceItemList = []
+        for(let imageItem of sampleImageItems) {
+            for(let faceItem of imageItem.faces) {
+                faceItemList.push({...faceItem, imageItem})
+            }
+        }
+
         return (
             <CustomGrid ncolumns={3}>
-                {[...samplePaths].map(({imagePath, thumbPath}) => (
-                    <Box key={imagePath} sx={{display: "flex", justifyContent: "center"}}>
-                        <CustomAvatar path={imagePath} update={updateSamplePaths}/>
+                {[...faceItemList].map((faceItem) => (
+                    <Box key={faceItem.faceId} sx={{display: "flex", justifyContent: "center"}}>
+                        <CustomAvatar faceItem={faceItem} update={updateSampleImageItems}/>
                     </Box>
                 ))}
             </CustomGrid>
@@ -45,10 +51,10 @@ function CustomGrid({children, ncolumns}) {
     return <Box sx={{width: "100%"}}>{rows}</Box>
 }
 
-function CustomAvatar({path, update}) {
+function CustomAvatar({update, faceItem}) {
     return <>
         <div className={"avatar-container"} style={{position: "relative"}}>
-            <Avatar src={getStaticSrc(path)} alt={path}
+            <Avatar src={getStaticSrc(faceItem.imagePath)} alt={getStaticSrc(faceItem.imagePath)}
                     sx={{height: "100%", width: "100%"}}
             />
             <Button
@@ -59,7 +65,7 @@ function CustomAvatar({path, update}) {
                     color={'error'}
                     variant={'contained'}
                     onClick={()=>{
-                        deleteSampleImage(path).then(update)
+                        deleteSampleFace(faceItem).then(update)
                     }}>
                 </DeleteIcon>
             </Button>

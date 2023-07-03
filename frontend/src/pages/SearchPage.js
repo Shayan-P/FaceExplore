@@ -4,7 +4,6 @@ import FormContainer from "../components/FormContainer";
 import FaceSampleContainer from "../components/face-sample-container/FaceSampleContainer";
 import { Link } from "react-router-dom"
 import {Box, Button, Container, Stack} from "@mui/material";
-import Typography from "@mui/material/Typography";
 import RainbowTypography from "../components/RainbowTypography";
 import Beaver from "../components/beaver/Beaver";
 import TalkBubble from "../components/talk-bubble/TalkBubble";
@@ -69,12 +68,12 @@ function Header({facesReady}) {
 }
 
 function UploadBox({setFacesReady}) {
-    const [samplePaths, setSamplePaths] = useState([])
+    const [sampleImageItems, setSampleImageItems] = useState([])
 
-    const updateSamplePaths = () => {
+    const updateSampleImageItems = () => {
         getMySampleImages()
             .then(responseData => {
-                setSamplePaths(responseData);
+                setSampleImageItems(responseData);
                 setFacesReady(responseData.length > 0) // todo what to do with errors?
             })
             .catch(error => {
@@ -84,8 +83,8 @@ function UploadBox({setFacesReady}) {
 
     return <>
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", p: 5}}>
-            <FormContainer updateSamplePaths={updateSamplePaths}/>
-            <FaceSampleContainer samplePaths={samplePaths} updateSamplePaths={updateSamplePaths}/>
+            <FormContainer updateSamplePaths={updateSampleImageItems}/>
+            <FaceSampleContainer sampleImageItems={sampleImageItems} updateSampleImageItems={updateSampleImageItems}/>
         </Box>
     </>
 }

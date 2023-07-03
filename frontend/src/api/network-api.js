@@ -35,11 +35,22 @@ export const uploadSampleImage = (image) => {
     )
 }
 
-export const deleteSampleImage = (imagePath)=> (extract_result(
+export const deleteSampleImage = (imageItem)=> (extract_result(
     fetch(`${apiPrefix}/delete_sample_image/`, {
         credentials: "same-origin",
         method: 'DELETE',
-        body: JSON.stringify({imagePath}),
+        body: JSON.stringify(imageItem),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+))
+
+export const deleteSampleFace = (faceItem)=> (extract_result(
+    fetch(`${apiPrefix}/delete_sample_face/`, {
+        credentials: "same-origin",
+        method: 'DELETE',
+        body: JSON.stringify(faceItem),
         headers: {
             "Content-Type": "application/json"
         }

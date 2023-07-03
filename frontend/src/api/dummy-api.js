@@ -24,7 +24,7 @@ function randomChoices(array, numChoices) {
 }
 
 function wrapData(img) {
-    return {"imagePath": img, "thumbPath": img}
+    return {"imagePath": img, "thumbPath": img, "imageId": img}
 }
 
 export const similarImagesAPI = ()=> Promise.resolve(randomChoices([img1, img2, img3, img4, img5, img6, img7], 5).map(wrapData))
@@ -38,7 +38,9 @@ export const uploadSampleImage = (image) => {
     });
 }
 
-export const deleteSampleImage = (imagePath)=> Promise.resolve([img1, img2, img3].map(wrapData))
+export const deleteSampleImage = (imageItem)=> Promise.resolve([img1, img2, img3].map(wrapData))
+
+export const deleteSampleFace = (faceItem)=> Promise.resolve([img1, img2, img3].map(wrapData))
 
 export function getStaticSrc(relpath) {
     // console.log('path is ', relpath)
