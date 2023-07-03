@@ -5,7 +5,7 @@ from backend.core import ImageModel
 from backend.settings import USER_IMAGE_PATH, IMAGE_SERVE_PATH
 from uuid import uuid4
 from PIL import Image
-from backend.core import similarity_cluster, get_all_gallery_clusters
+from backend.core import similarity_cluster, similarity_item, get_all_gallery_clusters
 
 
 class User:
@@ -66,8 +66,12 @@ class User:
         annot = annot[:5]  # todo change this
         items = []
         for cluster, _, _ in annot:
-            for face in cluster.faces:
-                item = face.image_item
+            annot_items = [
+                (item, *similarity_item(self.sample_image_items, item))
+                for item in set([face.image_item for face in cluster.faces])
+            ]
+            annot_items.sort(key=lambda pair: pair[1], reverse=True)
+            for item, _, _ in annot_items:
                 if item not in items:
                     items.append(item)
             items.append(ImageModel(filepath=os.path.join(IMAGE_SERVE_PATH, "delim.jpg"), do_load_faces=False))
