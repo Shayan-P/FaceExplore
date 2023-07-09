@@ -12,12 +12,15 @@ Initially, the project was meant to be search engine on "MIT Ring Delivery for c
 
 ### step1: Go to the website
 ![Screenshot from 2023-07-09 14-50-02.png](media%2FScreenshot%20from%202023-07-09%2014-50-02.png)
+
 ### step2: Upload sample image and click submit
-![Screenshot from 2023-07-09 14-58-12.png](..%2F..%2FPictures%2FScreenshots%2FScreenshot%20from%202023-07-09%2014-58-12.png)
+![Screenshot from 2023-07-09 14-58-12.png](media%2FScreenshot%20from%202023-07-09%2014-58-12.png)
+
 ### step3: Look! We found you!
 ![Screenshot from 2023-07-09 15-01-22.png](media%2FScreenshot%20from%202023-07-09%2015-01-22.png)
+
 ### step4: Download the images if you'd like
-![Screenshot from 2023-07-09 15-02-58.png](..%2F..%2FPictures%2FScreenshots%2FScreenshot%20from%202023-07-09%2015-02-58.png)
+![Screenshot from 2023-07-09 15-02-58.png](media%2FScreenshot%20from%202023-07-09%2015-02-58.png)
 
 ## Technical Details (Core)
 
